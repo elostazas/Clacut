@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>حاسبة التسعير</title>
+<style>
+body {
+    font-family: Tahoma, Arial;
+    background: #f5f5f5;
+}
+.box {
+    max-width: 360px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+}
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+.result {
+    background: #eee;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <h3>حاسبة التسعير</h3>
+
+    <input type="number" id="price" placeholder="ادخل السعر" oninput="calc()">
+
+    <div class="result">النسبة: <span id="percent">-</span></div>
+    <div class="result">صافي الربح: <span id="profit">-</span></div>
+    <div class="result">سعر البيع: <span id="sell">-</span></div>
+</div>
+
+<script>
+function calc() {
+    let price = parseFloat(document.getElementById("price").value);
+    if (!price || price <= 0) return;
+
+    let percent = 0;
+
+    if (price <= 25) percent = 0.25;
+    else if (price <= 50) percent = 0.20;
+    else if (price <= 100) percent = 0.15;
+    else if (price <= 250) percent = 0.10;
+    else if (price <= 500) percent = 0.07;
+    else if (price <= 750) percent = 0.06;
+    else if (price <= 1000) percent = 0.05;
+    else if (price <= 1250) percent = 0.04;
+    else if (price <= 1500) percent = 0.03;
+    else if (price <= 2000) percent = 0.02;
+    else percent = 0.01;
+
+    let profit = price * percent;
+    let sell = price + profit;
+
+    document.getElementById("percent").innerText = (percent * 100) + "%";
+    document.getElementById("profit").innerText = profit.toFixed(2);
+    document.getElementById("sell").innerText = sell.toFixed(2);
+}
+</script>
+
+</body>
+</html>
