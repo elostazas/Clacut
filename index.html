@@ -50,16 +50,16 @@ function calc() {
 
     let percent = 0;
 
-    if (price <= 24) percent = 0.25;
-    else if (price <= 49) percent = 0.20;
-    else if (price <= 99) percent = 0.15;
-    else if (price <= 249) percent = 0.10;
-    else if (price <= 499) percent = 0.07;
-    else if (price <= 749) percent = 0.06;
-    else if (price <= 999) percent = 0.05;
-    else if (price <= 1249) percent = 0.04;
-    else if (price <= 1499) percent = 0.03;
-    else if (price <= 1999) percent = 0.02;
+    if (price <= 25) percent = 0.25;
+    else if (price <= 50) percent = 0.20;
+    else if (price <= 100) percent = 0.15;
+    else if (price <= 250) percent = 0.10;
+    else if (price <= 500) percent = 0.07;
+    else if (price <= 750) percent = 0.06;
+    else if (price <= 1000) percent = 0.05;
+    else if (price <= 1250) percent = 0.04;
+    else if (price <= 1500) percent = 0.03;
+    else if (price <= 2000) percent = 0.02;
     else percent = 0.01;
 
     let profit = price * percent;
