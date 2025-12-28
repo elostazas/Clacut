@@ -2,78 +2,73 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>حاسبة النسبة</title>
+<title>حاسبة التسعير</title>
 <style>
 body {
-    font-family: Tahoma, Arial, sans-serif;
+    font-family: Tahoma, Arial;
     background: #f5f5f5;
-    padding: 30px;
 }
 .box {
+    max-width: 360px;
+    margin: 40px auto;
     background: #fff;
     padding: 20px;
-    max-width: 400px;
-    margin: auto;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,.1);
 }
 input {
     width: 100%;
     padding: 10px;
-    font-size: 16px;
     margin-bottom: 15px;
+    font-size: 16px;
 }
 .result {
-    margin-top: 15px;
-    font-size: 18px;
-    font-weight: bold;
     background: #eee;
     padding: 10px;
     border-radius: 6px;
+    margin-bottom: 10px;
 }
 </style>
 </head>
+
 <body>
 
 <div class="box">
-    <h3>أدخل السعر</h3>
-    <input type="number" id="price" placeholder="مثال: 120">
-    <div class="result" id="result">النسبة: - | القيمة: -</div>
+    <h3>حاسبة التسعير</h3>
+
+    <input type="number" id="price" placeholder="ادخل السعر" oninput="calc()">
+
+    <div class="result">النسبة: <span id="percent">-</span></div>
+    <div class="result">صافي الربح: <span id="profit">-</span></div>
+    <div class="result">سعر البيع: <span id="sell">-</span></div>
 </div>
 
 <script>
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRLGxxIqrjl0big4j4s2B9rvxEBTZ4ZqoyCDksCCPZXNpiEii_mSbSasgKZAYMlSA/pub?gid=237098079&single=true&output=csv";
+function calc() {
+    let price = parseFloat(document.getElementById("price").value);
+    if (!price || price <= 0) return;
 
-let rules = [];
+    let percent = 0;
 
-// تحميل البيانات من Google Sheets
-fetch(sheetURL)
-.then(res => res.text())
-.then(csv => {
-    const rows = csv.trim().split("\n").slice(1);
-    rules = rows.map(r => {
-        const c = r.split(",");
-        return {
-            from: Number(c[0]),
-            to: Number(c[1]),
-            rate: Number(c[2])
-        };
-    });
-});
+    if (price <= 24) percent = 0.25;
+    else if (price <= 49) percent = 0.20;
+    else if (price <= 99) percent = 0.15;
+    else if (price <= 249) percent = 0.10;
+    else if (price <= 499) percent = 0.07;
+    else if (price <= 749) percent = 0.06;
+    else if (price <= 999) percent = 0.05;
+    else if (price <= 1249) percent = 0.04;
+    else if (price <= 1499) percent = 0.03;
+    else if (price <= 1999) percent = 0.02;
+    else percent = 0.01;
 
-// حدث عند إدخال السعر
-document.getElementById("price").addEventListener("input", function () {
-    const price = Number(this.value);
-    const rule = rules.find(r => price >= r.from && price <= r.to);
+    let profit = price * percent;
+    let sell = price + profit;
 
-    if (rule) {
-        const value = price * rule.rate;
-        document.getElementById("result").innerHTML =
-            `النسبة: ${(rule.rate * 100).toFixed(2)}%<br>القيمة: ${value.toFixed(2)}`;
-    } else {
-        document.getElementById("result").innerText = "خارج النطاق";
-    }
-});
+    document.getElementById("percent").innerText = (percent * 100) + "%";
+    document.getElementById("profit").innerText = profit.toFixed(2);
+    document.getElementById("sell").innerText = sell.toFixed(2);
+}
 </script>
 
 </body>
