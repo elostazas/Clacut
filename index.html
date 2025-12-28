@@ -47,7 +47,7 @@ input {
 <script>
 let ranges = [];
 
-fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vQO_2c3cs2iBho_w707DWgBdW55_cBuFu8M8I7LcC6mWG-2F7FpafX29zrwO9emhG0C5uLWUqqBu6Sk/pub?gid=237098079&single=true&output=csv")
+fetch(https://docs.google.com/spreadsheets/d/e/2PACX-1vRLGxxIqrjl0big4j4s2B9rvxEBTZ4ZqoyCDksCCPZXNpiEii_mSbSasgKZAYMlSA/pub?gid=237098079&single=true&output=csv)
 .then(res => res.text())
 .then(csv => {
     let rows = csv.split("\n").slice(1);
