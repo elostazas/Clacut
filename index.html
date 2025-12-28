@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>حاسبة التسعير</title>
+
 <style>
 body {
     font-family: Tahoma, Arial;
@@ -44,23 +45,33 @@ input {
 </div>
 
 <script>
+let ranges = [];
+
+fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vQO_2c3cs2iBho_w707DWgBdW55_cBuFu8M8I7LcC6mWG-2F7FpafX29zrwO9emhG0C5uLWUqqBu6Sk/pub?gid=237098079&single=true&output=csv")
+.then(res => res.text())
+.then(csv => {
+    let rows = csv.split("\n").slice(1);
+    rows.forEach(row => {
+        let [from, to, percent] = row.split(",");
+        ranges.push({
+            from: parseFloat(from),
+            to: parseFloat(to),
+            percent: parseFloat(percent)
+        });
+    });
+});
+
 function calc() {
     let price = parseFloat(document.getElementById("price").value);
-    if (!price || price <= 0) return;
+    if (isNaN(price)) return;
 
     let percent = 0;
 
-    if (price <= 25) percent = 0.25;
-    else if (price <= 50) percent = 0.20;
-    else if (price <= 100) percent = 0.15;
-    else if (price <= 250) percent = 0.10;
-    else if (price <= 500) percent = 0.07;
-    else if (price <= 750) percent = 0.06;
-    else if (price <= 1000) percent = 0.05;
-    else if (price <= 1250) percent = 0.04;
-    else if (price <= 1500) percent = 0.03;
-    else if (price <= 2000) percent = 0.02;
-    else percent = 0.01;
+    ranges.forEach(r => {
+        if (price >= r.from && price <= r.to) {
+            percent = r.percent;
+        }
+    });
 
     let profit = price * percent;
     let sell = price + profit;
